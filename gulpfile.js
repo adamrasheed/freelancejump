@@ -31,12 +31,10 @@ const src = {
 
 const build = {
     root:  'build',
-    css:   'build/css/',
+    css:   'build/css',
     js:    'build/js'
 }
 
-
-process.env.NODE_ENV='development';
 
 //  SCRIPTS
 gulp.task('scripts', function(){
@@ -55,17 +53,18 @@ gulp.task('scripts', function(){
 
 
 //  SASS
-gulp.task('sass', function(){
+gulp.task('sass', function() {
     return gulp.src(src.scss)
     .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(sass({
         outputStyle: 'compressed'
-    }).on('error', sass.logError))
+    })
+    .on('error', sass.logError))
     .pipe(autoprefixer({
-        browsers: ['last 2 versions'],
-        cascade: false
-    }))
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(build.css))
     .pipe(notify('Sass Compiled'))
