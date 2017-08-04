@@ -2,9 +2,12 @@ const gulp              = require('gulp');
 const autoprefixer      = require('gulp-autoprefixer');
 const plumber           = require('gulp-plumber');
 const del               = require('del');
+
 const sass              = require('gulp-sass');
 const sassError         = require('gulp-sass-error');
+const csscomb           = require('gulp-csscomb');
 const sourcemaps        = require('gulp-sourcemaps');
+
 const rename            = require('gulp-rename');
 const uglify            = require('gulp-uglify');
 const babel             = require('gulp-babel');
@@ -17,24 +20,30 @@ const reload            = browserSync.reload;
 
 const config = {
     buildFilesRemove: [
-        'build/scss/',
+//        'build/scss/',
         'build/js/!(*.min.js)'
     ]
 }
 
 
 const src = {
-    scss:   'app/scss/**/*.scss',
+    scss:   'app/css/**/*.scss',
     js:     'app/js/**/*.js',
     html:   'app/*.html'
 }
 
 const build = {
     root:  'build',
-    css:   'build/css',
+    css:   'build/css/',
     js:    'build/js'
 }
 
+
+// log errors
+function errorlog(err){
+    console.error(err.message);
+    this.emit('end');
+}
 
 //  SCRIPTS
 gulp.task('scripts', function(){
@@ -58,7 +67,8 @@ gulp.task('sass', function() {
     .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(sass({
-        outputStyle: 'compressed'
+        outputStyle: 'compressed',
+        includePaths: [src.scss]
     })
     .on('error', sass.logError))
     .pipe(autoprefixer({
@@ -100,7 +110,7 @@ gulp.task('build:clean', function(cb) {
 //  build directory of all files
 gulp.task('build:copy', ['build:clean'], function(){
     return gulp.src('app/**/*')
-    .pipe(gulp.dest('build'))
+    .pipe(gulp.dest(build.root))
 });
 
 // remove unwanted build files
