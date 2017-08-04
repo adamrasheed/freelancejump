@@ -15,23 +15,30 @@ const browserSync       = require('browser-sync');
 const reload            = browserSync.reload;
 
 
+const config = {
+    buildFilesRemove: [
+        'build/scss/',
+        'build/js/!(*.min.js)'
+    ]
+}
+
+
 const src = {
-    scss: 'app/scss/**/*.scss',
-    js: 'app/js/**/*.js',
-    html: 'app/*.html'
+    scss:   'app/scss/**/*.scss',
+    js:     'app/js/**/*.js',
+    html:   'app/*.html'
 }
 
 const build = {
-    root: 'build',
-    css: 'build/css',
-    js: 'build/js'
+    root:  'build',
+    css:   'build/css/',
+    js:    'build/js'
 }
 
 
 process.env.NODE_ENV='development';
 
 //  SCRIPTS
-
 gulp.task('scripts', function(){
     return gulp.src(src.js)
     .pipe(sourcemaps.init())
@@ -47,6 +54,7 @@ gulp.task('scripts', function(){
 });
 
 
+//  SASS
 gulp.task('sass', function(){
     return gulp.src(src.scss)
     .pipe(plumber())
@@ -74,19 +82,6 @@ gulp.task('html', function(){
 });
 
 
-//  WATCH
-gulp.task('watch', function(){
-    gulp.watch(src.js, ['scripts']);
-    gulp.watch(src.scss, ['sass']);
-    gulp.watch(src.html, ['html']);
-});
-
-
-//  Clean
-gulp.task('clean', function(cb) {
-    del([build.root], cb);
-});
-
 
 //  BROWSERSYNC
 gulp.task('browser-sync', function() {
@@ -95,10 +90,35 @@ gulp.task('browser-sync', function() {
     });
 });
 
-//  Build
-gulp.task('build',['clean','scripts', 'sass', 'html', 'browser-sync', 'watch'], function(){
-    return gulp.src([src.scss, src.js, src.html], { base: './app'})
-    .pipe(gulp.dest(build.root));
+
+//  BUILD TASKS     //
+
+//  Clean
+gulp.task('build:clean', function(cb) {
+    del(['build/**'], cb);
 });
 
-gulp.task('default', ['build']);
+//  build directory of all files
+gulp.task('build:copy', ['build:clean'], function(){
+    return gulp.src('app/**/*')
+    .pipe(gulp.dest('build'))
+});
+
+// remove unwanted build files
+gulp.task('build:remove', ['build:copy'], function(cb) {
+    del(config.buildFilesRemove, cb)
+});
+
+// build task
+gulp.task('build', ['build:copy', 'build:remove']);
+
+
+//  WATCH
+gulp.task('watch', function(){
+    gulp.watch(src.js, ['scripts']);
+    gulp.watch(src.scss, ['sass']);
+    gulp.watch(src.html, ['html']);
+});
+
+
+gulp.task('default', ['scripts', 'sass', 'html', 'browser-sync', 'watch']);
