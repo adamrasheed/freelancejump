@@ -49,7 +49,7 @@ const path = {
 }
 
 const src = {
-    img:    'a[[/images/**/*]]'
+    img:    'a[[/images/**/*]]',
     scss:   'app/css/**/*.scss',
     js:     'app/js/**/*.js',
     html:   'app/*.html'
@@ -57,8 +57,8 @@ const src = {
 
 const build = {
     root:  'build',
-    img:   'build/image'
-    css:   'build/css',
+    img:   'build/image',
+    css:   'build/css/',
     js:    'build/js'
 }
 
@@ -100,19 +100,11 @@ gulp.task('scripts', function(){
 
 //  SASS
 gulp.task('sass', function() {
-    return gulp.src(src.scss)
+    return sass(src.scss, {style: 'compressed', sourcemap: true})
+    .on('error', sass.logError)
     .pipe(plumber())
-    .pipe(sourcemaps.init())
-    .pipe(sass({
-        outputStyle: 'compressed',
-        includePaths: [src.scss]
-    })
-    .on('error', sass.logError))
-    .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
-            cascade: false
-        }))
-    .pipe(sourcemaps.write('./'))
+    .pipe(sourcemaps.write())
+   .pipe(autoprefixer('last 2 versions'))
     .pipe(gulp.dest(build.css))
     .pipe(notify('Sass Compiled'))
     .pipe(reload({stream:true}));
