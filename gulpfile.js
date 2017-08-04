@@ -1,18 +1,24 @@
 const gulp              = require('gulp');
-const autoprefixer      = require('gulp-autoprefixer');
 const plumber           = require('gulp-plumber');
-const del               = require('del');
-
-const sass              = require('gulp-sass');
-const sassError         = require('gulp-sass-error');
-const csscomb           = require('gulp-csscomb');
-const sourcemaps        = require('gulp-sourcemaps');
-
 const rename            = require('gulp-rename');
-const uglify            = require('gulp-uglify');
+
+const autoprefixer      = require('gulp-autoprefixer');
+
 const babel             = require('gulp-babel');
+
+
 const concat            = require('gulp-concat');
 const jshint            = require('gulp-jshint');
+const uglify            = require('gulp-uglify');
+
+const del               = require('del');
+
+
+const sass              = require('gulp-ruby-sass');
+const sassError         = require('gulp-sass-error');
+const sourcemaps        = require('gulp-sourcemaps');
+
+
 const notify            = require('gulp-notify');
 const browserSync       = require('browser-sync');
 const reload            = browserSync.reload;
@@ -25,8 +31,25 @@ const config = {
     ]
 }
 
+const path = {
+    root: './build',
+    
+    style: {
+        input: './app/**/*.scss',
+        main: './app/scss/main.scss',
+        output: './build/css'
+    },
+    
+    script: {
+        input: './app/css/**/*.scss',
+        main: './app/js/main.js',
+        output: './build/js'
+    }
+    
+}
 
 const src = {
+    img:    'a[[/images/**/*]]'
     scss:   'app/css/**/*.scss',
     js:     'app/js/**/*.js',
     html:   'app/*.html'
@@ -34,16 +57,30 @@ const src = {
 
 const build = {
     root:  'build',
-    css:   'build/css/',
+    img:   'build/image'
+    css:   'build/css',
     js:    'build/js'
 }
 
+
+//  BROWSERSYNC
+gulp.task('browser-sync', function() {
+    browserSync({
+        server:{baseDir: './build/'}
+    });
+});
 
 // log errors
 function errorlog(err){
     console.error(err.message);
     this.emit('end');
 }
+
+// Images
+gulp.task('images', function(){
+    gulp.src(src.img)
+    .pipe(gulp.dest(build.img))
+});
 
 //  SCRIPTS
 gulp.task('scripts', function(){
@@ -91,15 +128,6 @@ gulp.task('html', function(){
 });
 
 
-
-//  BROWSERSYNC
-gulp.task('browser-sync', function() {
-    browserSync({
-        server:{baseDir: './build/'}
-    });
-});
-
-
 //  BUILD TASKS     //
 
 //  Clean
@@ -124,10 +152,11 @@ gulp.task('build', ['build:copy', 'build:remove']);
 
 //  WATCH
 gulp.task('watch', function(){
+    gulp.watch(src.img, ['images']);
     gulp.watch(src.js, ['scripts']);
     gulp.watch(src.scss, ['sass']);
     gulp.watch(src.html, ['html']);
 });
 
 
-gulp.task('default', ['scripts', 'sass', 'html', 'browser-sync', 'watch']);
+gulp.task('default', ['scripts', 'images', 'sass', 'html', 'browser-sync', 'watch']);
