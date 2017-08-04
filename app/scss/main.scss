@@ -1,0 +1,16 @@
+// SCSS File
+
+@import 'global/reset',
+        'global/base',
+        'global/helper-classes',
+        'global/variables',
+        'global/mixins',
+        'global/typography',
+        'global/grid';
+
+@import 'layout/body',
+        'layout/header',
+        'layout/footer',
+        'layout/sidebar';
+
+@import 'pages/home';
