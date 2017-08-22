@@ -49,7 +49,7 @@ const path = {
 }
 
 const src = {
-    img:    'a[[/images/**/*]]',
+    img:    'app/images/**/*',
     scss:   'app/css/**/*.scss',
     js:     'app/js/**/*.js',
     html:   'app/*.html'
