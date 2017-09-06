@@ -8,10 +8,15 @@
         'global/typography',
         'global/grid';
 
+@import 'modules/buttons',
+        'modules/posts';
+
 @import 'layout/body',
         'layout/header',
         'layout/footer',
         'layout/sidebar';
 
 @import 'pages/home';
+
+
 

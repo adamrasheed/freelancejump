@@ -1,4 +1,19 @@
 //    VARS    //
+//    Sizes
+$font-size-base: 16px;
+$font-size-small: calc(16px * .875);
+$font-size-extra-small: calc(16px * .75);
+
+//    Colors
+$text: hsla(0, 0%, 23%, 1);
+
+// Category Colors
+$category : (
+	business: #1565c0,
+	marketing: #ba68c8,
+	lifestyle: #9ccc65,
+	creativity: #ffc400
+);
 
 
 //    Media

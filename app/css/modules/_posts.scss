@@ -1,0 +1,42 @@
+.posts{
+    padding: 1rem 0;
+}
+
+.post{
+    margin-bottom: 4rem;
+//    background: lightblue;
+    
+    &__category{
+        margin-bottom: .25rem;
+    }
+    
+    &__title{
+        margin-bottom: 1rem;
+    }
+    
+    &__meta{
+        border-top: 2px solid $text;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-top: .5rem;
+        font-size: $font-size-extra-small;
+    }
+    
+    &__comment, &__time{
+        text-transform: uppercase;
+        letter-spacing: .1em;
+    }
+    
+    
+}
+
+@each $cat, $value in $category {
+    .post__category--#{$cat}{
+        color: $value;
+    }
+    
+    .post__meta--#{$cat}{
+        border-top: 2px solid $value;
+    }
+}
