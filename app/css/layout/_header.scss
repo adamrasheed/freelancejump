@@ -1,0 +1,46 @@
+.header{
+//    padding: 1rem;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-flow: row wrap;
+    margin-bottom: 2rem;
+    
+    &__menu-toggle, .fa-bars{
+        font-size: 2rem;
+        padding: 1rem;
+    }
+    
+    &__nav{
+        display: none;
+    }
+    
+    &:after{
+        content: '';
+        display: block;
+        height: 6px;
+        background: map-get($category, business);
+        width: 100%;
+        flex: 100%;
+    }
+}
+
+.site-logo{
+    color: $text;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1rem;
+    
+    &__img{
+        height: 1.5rem;
+        width: auto;
+    }
+    &__text{
+        font-size: $font-size-large;
+        margin-left: .5rem;
+    }
+}
